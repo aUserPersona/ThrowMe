@@ -24,15 +24,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         speedDispay = findViewById(R.id.text_Counter)
 
         val rollButton: Button = findViewById(R.id.button)
         rollButton.setOnClickListener {
-            rollButton.setText("WOO")
-            countDownTimer(5000)
-            val toast = Toast.makeText(this, "Waaiit...!", Toast.LENGTH_SHORT)
-            toast.show()
+            countDownTimer(4000) //Counting Down and starting doSensorMagic() when done -> 4sek
         }
     }
 
@@ -60,7 +58,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
             // when the time is up
             override fun onFinish() {
-                numberForCounter.text = "Thow!"
+                val rollButton: Button = findViewById(R.id.button)
+                rollButton.setText("Throw!")
                 doSensorMagic()
             }
         }.start()
@@ -68,11 +67,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     }
 
+    //If Sensor Input Changes -> Do Stuff
     override fun onSensorChanged(p0: SensorEvent?) {
         if (p0?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
             val left_right_tilt = p0.values[0]
             val up_down_tilt = p0.values[1]
 
+            //Change Dimensions of Text to represent Tilt
             speedDispay.apply {
                 rotationX = up_down_tilt * 3f
                 rotationY = left_right_tilt * 3f
