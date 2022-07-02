@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         val rollButton: Button = findViewById(R.id.button)
         rollButton.setOnClickListener {
+            rollButton.setText("CountDown")
+            rollButton.setBackgroundColor(Color.YELLOW)
             countDownTimer(4000) //Counting Down and starting doSensorMagic() when done -> 4sek
         }
     }
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             override fun onFinish() {
                 val rollButton: Button = findViewById(R.id.button)
                 rollButton.setText("Throw!")
+                rollButton.setBackgroundColor(Color.GREEN)
                 doSensorMagic()
             }
         }.start()
