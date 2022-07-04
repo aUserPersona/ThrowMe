@@ -8,9 +8,8 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
+//import android.widget.Toast -> Include for pop up mssges (Use for Disclaimer)
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 
@@ -23,16 +22,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main) //Setting Homescreen to MainActivity
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         speedDispay = findViewById(R.id.text_Counter)
 
         val rollButton: Button = findViewById(R.id.button)
         rollButton.setOnClickListener {
-            rollButton.setText("CountDown")
             rollButton.setBackgroundColor(Color.YELLOW)
-            countDownTimer(4000) //Counting Down and starting doSensorMagic() when done -> 4sek
+            rollButton.setText("CountDown")
+            //Counting Down and starting doSensorMagic() when done -> 4sek
+            countDownTimer(4000)
         }
     }
 
@@ -42,13 +42,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             sensorManager.registerListener(
                 this,
                 it,
-                SensorManager.SENSOR_DELAY_FASTEST,
+                SensorManager.SENSOR_DELAY_FASTEST, //Fastest Sensor Delay (Display Numbers need to be refreshed fast)
                 SensorManager.SENSOR_DELAY_FASTEST
             )
         }
     }
 
-    //Timer Funktion
+    //Timer Funktion (3sec/+1 to compensate for loading times)
     private fun countDownTimer(milliSekUntilDone: Long) {
         val numberForCounter: TextView = findViewById(R.id.text_Counter)
         object : CountDownTimer(milliSekUntilDone, 1000) {
@@ -66,8 +66,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 doSensorMagic()
             }
         }.start()
-
-
     }
 
     //If Sensor Input Changes -> Do Stuff
@@ -76,7 +74,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             val left_right_tilt = p0.values[0]
             val up_down_tilt = p0.values[1]
 
-            //Change Dimensions of Text to represent Tilt
+            //Change Dimensions of Text to represent Tilt ()
             speedDispay.apply {
                 rotationX = up_down_tilt * 3f
                 rotationY = left_right_tilt * 3f
@@ -86,7 +84,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
 
             val color =
-                if (up_down_tilt.toInt() == 0 && left_right_tilt.toInt() == 0) Color.GREEN else Color.MAGENTA
+                if (up_down_tilt.toInt() == 0 && left_right_tilt.toInt() == 0) Color.GREEN else Color.RED //Set NuberColor based on Tilt
             speedDispay.setTextColor(color)
             speedDispay.text = "X:${up_down_tilt.toInt()}\nY:${left_right_tilt.toInt()}"
 
